@@ -17,3 +17,27 @@ resource "aws_instance" "grafana_instance" {
     Name = "GrafanaInstance"
   }
 }
+
+resource "aws_security_group" "grafana_instance" {
+  name = "grafana_instance"
+
+  # Allow SSH traffic on port 22
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "iprometheus_instance"" {
+  name = "prometheus_instance"
+
+  # Allow SSH traffic on port 22
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
