@@ -30,7 +30,7 @@ resource "aws_security_group" "grafana_instance" {
   }
 }
 
-resource "aws_security_group" "iprometheus_instance"" {
+resource "aws_security_group" "prometheus_instance" {
   name = "prometheus_instance"
 
   # Allow SSH traffic on port 22
