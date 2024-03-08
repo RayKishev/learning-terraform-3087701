@@ -14,6 +14,22 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 }
 
+provider "aws" {
+  region = "us-west-2"
+}
+
+# Create VPC
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+# Create public subnet
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+}
+
 # Create internet gateway
 resource "aws_internet_gateway" "my_igw" {
   vpc_id = aws_vpc.my_vpc.id
@@ -59,7 +75,7 @@ resource "aws_instance" "prometheus_instance" {
   ami           = "ami-08f7912c15ca96832"  # Specify AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.ssh_sg.name]
+  security_groups = [aws_security_group.ssh_sg.id]
 
   tags = {
     Name = "prometheus"
@@ -71,7 +87,7 @@ resource "aws_instance" "grafana_instance" {
   ami           = "ami-08f7912c15ca96832"  # Specify AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.ssh_sg.name]
+  security_groups = [aws_security_group.ssh_sg.id]
 
   tags = {
     Name = "grafana"
